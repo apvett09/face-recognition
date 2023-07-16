@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# React Image Recognition App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a web application built with React that allows users to register, sign in, and submit image URLs for analysis. The application utilizes a server-side backend application using Express.js and a PostgreSQL database. It handles user registration, authentication, profile management, and image recognition using the Clarifai face-detection AI model.
 
-## Available Scripts
+The backend repository for the server-side application can be found at [face-recognition-api](https://github.com/apvett09/face-recognition-api) on GitHub. The backend is hosted on Heroku, and the database is also hosted on Heroku.
 
-In the project directory, you can run:
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User Registration: Users can create an account by providing their name, email, and password.
+- User Sign In: Registered users can sign in using their email and password to access the app.
+- Image Submission: Once signed in, users can submit image URLs to be analyzed by the application.
+- Image Recognition: The application utilizes the Clarifai face-detection AI model to recognize faces in the submitted images.
+- Profile Management: Users can view and update their profile information, including name, email, and password.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- React: A JavaScript library for building user interfaces.
+- Express.js: A minimal and flexible Node.js web application framework.
+- PostgreSQL: A powerful open-source relational database management system.
+- Clarifai: A machine learning platform that provides AI models for image and video recognition.
+- Heroku: A cloud platform for hosting applications and databases.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Prerequisites
 
-### `npm run build`
+This is just a project but if like the frontend feel free to clone/fork. If you want to recreate the entire application checkout the backend code mentioned above. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Before running the application, ensure that the following dependencies are installed:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js: [Download and install Node.js](https://nodejs.org) if it is not already installed.
+- PostgreSQL: Install locally or host one on Heroku.
+- Clarifai API Key: Sign up for a Clarifai account and obtain an API key.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## License
 
-### `npm run eject`
+This project is licensed under the [MIT License](LICENSE).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Acknowledgements
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- The application utilizes the [Clarifai](https://www.clarifai.com/) face-detection AI model.
