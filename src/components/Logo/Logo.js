@@ -24,7 +24,7 @@ const Logo = () => {
         style={{ height: 150, width: 150 }}
       >
         <div className="pa3">
-          <img style={{ paddingTop: "10px" }} atl="logo" src={logo} />
+          <img style={{ paddingTop: "10px" }} alt="logo" src={logo} />
         </div>
       </Tilt>
     </div>
