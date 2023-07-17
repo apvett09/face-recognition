@@ -72,9 +72,10 @@ const App = () => {
   };
 
   const onInputChange = (event) => {
+    const value = event.target.value;
     setState((prevState) => ({
       ...prevState,
-      input: event.target.value,
+      input: value,
     }));
   };
 
