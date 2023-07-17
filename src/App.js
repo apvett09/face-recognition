@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
 import SignIn from "./components/SignIn/SignIn";
@@ -7,7 +8,6 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import ParticlesBg from "particles-bg";
-import { Component } from "react";
 
 const initialState = {
   input: "",
@@ -26,14 +26,17 @@ const initialState = {
   },
 };
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = initialState;
-  }
+const App = () => {
+  const [state, setState] = useState(initialState);
 
-  loadUser = (data) => {
-    this.setState({
+  useEffect(() => {
+    // Initialize state
+    setState(initialState);
+  }, []);
+
+  const loadUser = (data) => {
+    setState((prevState) => ({
+      ...prevState,
       user: {
         id: data.id,
         name: data.name,
@@ -41,10 +44,10 @@ class App extends Component {
         entries: data.entries,
         joined: data.joined,
       },
-    });
+    }));
   };
 
-  calculateFaceLocations = (data) => {
+  const calculateFaceLocations = (data) => {
     const clarifaiFaces = data.outputs[0].data.regions;
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
@@ -61,27 +64,34 @@ class App extends Component {
     });
   };
 
-  displayFaceBox = (boxes) => {
-    this.setState({ boxes: boxes });
+  const displayFaceBox = (boxes) => {
+    setState((prevState) => ({
+      ...prevState,
+      boxes: boxes,
+    }));
   };
 
-  onInputChange = (event) => {
-    this.setState({ input: event.target.value });
+  const onInputChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      input: event.target.value,
+    }));
   };
 
-  onButtonSubmit = () => {
-    this.setState({
-      imageURL: this.state.input,
+  const onButtonSubmit = () => {
+    setState((prevState) => ({
+      ...prevState,
+      imageURL: prevState.input,
       boxes: [],
       errorMessage: "",
       numOfFaces: 0,
-    });
+    }));
 
     fetch("https://vert-fromage-72945-b3ad89284d69.herokuapp.com/imageurl", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        input: this.state.input,
+        input: prevState.input,
       }),
     })
       .then((response) => {
@@ -105,84 +115,90 @@ class App extends Component {
           parsedResult &&
           Object.keys(parsedResult.outputs[0].data).length === 0
         ) {
-          this.setState({ numOfFaces: 0 });
+          setState((prevState) => ({
+            ...prevState,
+            numOfFaces: 0,
+          }));
         }
         // results returned from api one or more faces detected
         if (parsedResult && parsedResult.outputs[0].data.regions) {
           const numOfFaces = parsedResult.outputs[0].data.regions.length;
-          this.setState({ numOfFaces: numOfFaces });
+          setState((prevState) => ({
+            ...prevState,
+            numOfFaces: numOfFaces,
+          }));
 
           fetch("https://vert-fromage-72945-b3ad89284d69.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              id: this.state.user.id,
+              id: prevState.user.id,
             }),
           })
             .then((response) => response.json())
             .then((count) => {
-              this.setState(Object.assign(this.state.user, { entries: count }));
+              setState((prevState) => ({
+                ...prevState,
+                user: { ...prevState.user, entries: count },
+              }));
             })
             .catch((err) => console.log(err));
 
-          this.displayFaceBox(this.calculateFaceLocations(parsedResult));
+          displayFaceBox(calculateFaceLocations(parsedResult));
         }
       })
       .catch((error) => {
         console.log(error);
-        this.setState({ errorMessage: error.message }); // Update the error state
+        setState((prevState) => ({
+          ...prevState,
+          errorMessage: error.message,
+        }));
       });
   };
 
-  onRouteChange = (route) => {
+  const onRouteChange = (route) => {
     if (route === "signout" || route === "signin") {
-      this.setState(initialState);
+      setState(initialState);
     } else if (route === "home") {
-      this.setState({ isSignedIn: true });
+      setState((prevState) => ({
+        ...prevState,
+        isSignedIn: true,
+      }));
     }
-    this.setState({ route: route });
+    setState((prevState) => ({
+      ...prevState,
+      route: route,
+    }));
   };
 
-  render() {
-    const { isSignedIn, imageURL, route, boxes, errorMessage, numOfFaces } =
-      this.state;
-    return (
-      <div className="App">
-        <ParticlesBg color="#FFFFFF" num={200} type="cobweb" bg={true} />
-        <Navigation
-          isSignedIn={isSignedIn}
-          onRouteChange={this.onRouteChange}
-        />
-        {route === "home" ? (
-          <div>
-            <Logo />
-            <Rank
-              name={this.state.user.name}
-              entries={this.state.user.entries}
-            />
-            <ImageLinkForm
-              onInputChange={this.onInputChange}
-              onButtonSubmit={this.onButtonSubmit}
-            />
-            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
-            {numOfFaces > 0 && (
-              <p className="numOfFaces">
-                Number of Faces Detected: {numOfFaces}
-              </p>
-            )}
-            <FaceRecognition boxes={boxes} imageURL={imageURL} />
-          </div>
-        ) : route === "signin" ? (
-          <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        ) : (
-          <Register
-            loadUser={this.loadUser}
-            onRouteChange={this.onRouteChange}
+  const { isSignedIn, imageURL, route, boxes, errorMessage, numOfFaces } =
+    state;
+
+  return (
+    <div className="App">
+      <ParticlesBg color="#FFFFFF" num={200} type="cobweb" bg={true} />
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      {route === "home" ? (
+        <div>
+          <Logo />
+          <Rank name={state.user.name} entries={state.user.entries} />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
           />
-        )}
-      </div>
-    );
-  }
-}
+          {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+          {numOfFaces > 0 && (
+            <p className="numOfFaces">Number of Faces Detected: {numOfFaces}</p>
+          )}
+          <FaceRecognition boxes={boxes} imageURL={imageURL} />
+        </div>
+      ) : route === "signin" ? (
+        <SignIn loadUser={loadUser} onRouteChange={onRouteChange} />
+      ) : (
+        <Register loadUser={loadUser} onRouteChange={onRouteChange} />
+      )}
+    </div>
+  );
+};
 
 export default App;
